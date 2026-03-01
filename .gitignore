@@ -1,0 +1,23 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Database local
+*.db
+*.sqlite
+
+# Rider / VSCode
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

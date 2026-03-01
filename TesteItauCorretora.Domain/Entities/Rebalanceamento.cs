@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TesteItauCorretora.Domain.Entities;
+
+public enum TipoRebalanceamento
+{
+    MudancaCesta = 1,
+    Desvio = 2
+}
+
+public class Rebalanceamento
+{
+    public long Id { get; set; }
+    public long ClienteId { get; set; }
+
+    public TipoRebalanceamento Tipo { get; set; }
+
+    public string TickerVendido { get; set; } = string.Empty;
+    public string TickerComprado { get; set; } = string.Empty;
+
+    public decimal ValorVenda { get; set; }
+    public DateTime DataRebalanceamento { get; set; }
+}
