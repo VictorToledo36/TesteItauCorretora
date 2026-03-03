@@ -16,11 +16,10 @@ public class OrdemCompra
 {
     public int Id { get; set; }
     public int ContaMasterId { get; set; }
-
     public string Ticker { get; set; } = string.Empty;
     public int Quantidade { get; set; }
     public decimal PrecoUnitario { get; set; }
-
     public TipoMercado TipoMercado { get; set; }
     public DateTime DataExecucao { get; set; }
+    public ICollection<Distribuicao> Distribuicoes { get; set; } = new List<Distribuicao>();
 }

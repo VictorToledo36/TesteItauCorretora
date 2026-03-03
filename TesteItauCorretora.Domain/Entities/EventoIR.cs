@@ -16,12 +16,9 @@ public class EventoIR
 {
     public int Id { get; set; }
     public int ClienteId { get; set; }
-
     public TipoEventoIR Tipo { get; set; }
-
     public decimal ValorBase { get; set; }
     public decimal ValorIR { get; set; }
-
     public bool PublicadoKafka { get; set; }
     public DateTime DataEvento { get; set; }
 }

@@ -16,11 +16,8 @@ public class ContaGrafica
 {
     public int Id { get; set; }
     public int ClienteID { get; set; }
-
     public string NumeroConta { get; set; } = string.Empty;
     public TipoConta Tipo { get; set; }
     public DateTime DataCriacao { get; set; }
-
-    public Cliente? Cliente { get; set; }
     public ICollection<Custodia>? Custodias { get; set; }
 }
