@@ -8,8 +8,8 @@ namespace TesteItauCorretora.Domain.Entities;
 
 public class ItemCesta
 {
-    public long Id { get; set; }
-    public long CestaId { get; set; }
+    public int Id { get; set; }
+    public int CestaId { get; set; }
 
     public string Ticker { get; set; } = string.Empty;
     public decimal Percentual { get; set; }

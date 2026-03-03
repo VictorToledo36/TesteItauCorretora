@@ -14,8 +14,8 @@ public enum TipoMercado
 
 public class OrdemCompra
 {
-    public long Id { get; set; }
-    public long ContaMasterId { get; set; }
+    public int Id { get; set; }
+    public int ContaMasterId { get; set; }
 
     public string Ticker { get; set; } = string.Empty;
     public int Quantidade { get; set; }

@@ -8,10 +8,10 @@ namespace TesteItauCorretora.Domain.Entities;
 
 public class Distribuicao
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
-    public long OrdemCompraId { get; set; }
-    public long CustodiaFilhoteId { get; set; }
+    public int OrdemCompraId { get; set; }
+    public int CustodiaFilhoteId { get; set; }
 
     public string Ticker { get; set; } = string.Empty;
     public int Quantidade { get; set; }

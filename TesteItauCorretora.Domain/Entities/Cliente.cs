@@ -8,7 +8,7 @@ namespace TesteItauCorretora.Domain.Entities;
 
 public class Cliente
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public string CPF { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -16,6 +16,9 @@ public class Cliente
     public decimal ValorMensal { get; set; }
     public bool Ativo { get; set; } = true;
     public DateTime DataAdesao { get; set; }
-
-    public ICollection<ContaGrafica>? Contas { get; set; }
+    public ContaGrafica ContaGrafica { get; set; }
 }
+
+
+
+

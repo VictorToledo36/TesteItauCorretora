@@ -14,8 +14,8 @@ public enum TipoRebalanceamento
 
 public class Rebalanceamento
 {
-    public long Id { get; set; }
-    public long ClienteId { get; set; }
+    public int Id { get; set; }
+    public int ClienteId { get; set; }
 
     public TipoRebalanceamento Tipo { get; set; }
 

@@ -14,8 +14,8 @@ public enum TipoEventoIR
 
 public class EventoIR
 {
-    public long Id { get; set; }
-    public long ClienteId { get; set; }
+    public int Id { get; set; }
+    public int ClienteId { get; set; }
 
     public TipoEventoIR Tipo { get; set; }
 

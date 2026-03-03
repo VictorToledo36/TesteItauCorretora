@@ -8,7 +8,7 @@ namespace TesteItauCorretora.Domain.Entities;
 
 public class Cotacao
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public DateTime DataPregao { get; set; }
 
     public string Ticker { get; set; } = string.Empty;

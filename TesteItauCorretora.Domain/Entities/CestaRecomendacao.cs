@@ -8,7 +8,7 @@ namespace TesteItauCorretora.Domain.Entities;
 
 public class CestaRecomendacao
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public bool Ativa { get; set; }
 

@@ -14,8 +14,8 @@ public enum TipoConta
 
 public class ContaGrafica
 {
-    public long Id { get; set; }
-    public long ClienteId { get; set; }
+    public int Id { get; set; }
+    public int ClienteID { get; set; }
 
     public string NumeroConta { get; set; } = string.Empty;
     public TipoConta Tipo { get; set; }
