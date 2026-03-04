@@ -14,7 +14,7 @@ namespace TesteItauCorretora.Infrastructure.Persistence.Configurations
             builder.Property(c => c.NumeroConta).IsRequired().HasMaxLength(20).HasColumnType("varchar(20)");
             builder.Property(c => c.Tipo).IsRequired().HasConversion<int>();
             builder.Property(c => c.DataCriacao).IsRequired();
-            builder.HasOne<Cliente>().WithOne().HasForeignKey<ContaGrafica>(c => c.ClienteID);
+            builder.HasMany(c => c.Custodias).WithOne(c => c.ContaGrafica).HasForeignKey(c => c.ContaGraficaId);
 
         }
     }
