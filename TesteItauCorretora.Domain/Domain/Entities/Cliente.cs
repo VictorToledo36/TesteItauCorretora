@@ -1,5 +1,4 @@
-﻿using TesteItauCorretora.Domain.Entities;
-using TesteItauCorretora.Domain.Exceptions;
+﻿using TesteItauCorretora.Domain.Exceptions;
 
 namespace TesteItauCorretora.Domain.Entities;
 
@@ -12,7 +11,7 @@ public class Cliente
     public string CPF { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public decimal ValorMensal { get; private set; }
-    public bool Ativo { get; private set; } = true;
+    public bool Ativo { get; private set; }
     public DateTime DataAdesao { get; private set; }
     public DateTime? DataSaida { get; private set; }
 
@@ -20,32 +19,45 @@ public class Cliente
     public ICollection<EventoIR> EventosIR { get; private set; } = new List<EventoIR>();
     public ICollection<Rebalanceamento> Rebalanceamentos { get; private set; } = new List<Rebalanceamento>();
 
-    // Construtor para EF
-    private Cliente() { }
+    public ICollection<HistoricoValorMensal> HistoricoValores { get; private set; }
+        = new List<HistoricoValorMensal>();
 
-    // RN-001, RN-003, RN-005, RN-006
+    private Cliente() { } 
+
     public Cliente(string nome, string cpf, string email, decimal valorMensal)
     {
         ValidarDadosObrigatorios(nome, cpf, email);
         ValidarValorMensal(valorMensal);
 
-        Nome = nome;
+        Nome = nome.Trim();
         CPF = LimparCpf(cpf);
-        Email = email;
+        Email = email.Trim();
         ValorMensal = valorMensal;
         Ativo = true;
         DataAdesao = DateTime.Now;
     }
 
-    // RN-011, RN-012, RN-013
-    public void AlterarValorMensal(decimal novoValor)
+    public void AlterarValorMensal(decimal novoValor, string? observacao = null)
     {
+        if (!Ativo)
+            throw new ClienteDadosInvalidosException("Cliente inativo não pode alterar valor.");
+
         ValidarValorMensal(novoValor);
-        // O histórico será mantido através de um evento ou tabela de auditoria
+
+        if (novoValor == ValorMensal)
+            return;
+
+        var historico = new HistoricoValorMensal(
+            ValorMensal,
+            novoValor,
+            observacao
+        );
+
+        HistoricoValores.Add(historico);
+
         ValorMensal = novoValor;
     }
 
-    // RN-007, RN-008, RN-009
     public void Sair()
     {
         if (!Ativo)
@@ -53,11 +65,8 @@ public class Cliente
 
         Ativo = false;
         DataSaida = DateTime.Now;
-        // A posição na custódia é mantida (não há venda automática)
-        // O cliente não participa mais das compras programadas
     }
 
-    // RN-010
     public void Reativar()
     {
         if (Ativo)
@@ -67,7 +76,6 @@ public class Cliente
         DataSaida = null;
     }
 
-    // RN-001
     private void ValidarDadosObrigatorios(string nome, string cpf, string email)
     {
         if (string.IsNullOrWhiteSpace(nome))
@@ -86,7 +94,6 @@ public class Cliente
             throw new ClienteDadosInvalidosException("Email inválido.");
     }
 
-    // RN-003
     private void ValidarValorMensal(decimal valor)
     {
         if (valor < VALOR_MINIMO)
@@ -94,18 +101,14 @@ public class Cliente
     }
 
     private string LimparCpf(string cpf)
-    {
-        return cpf.Replace(".", "").Replace("-", "").Trim();
-    }
+        => new string(cpf.Where(char.IsDigit).ToArray());
 
     private bool ValidarFormatoCpf(string cpf)
     {
         var cpfLimpo = LimparCpf(cpf);
-        return cpfLimpo.Length == 11 && cpfLimpo.All(char.IsDigit);
+        return cpfLimpo.Length == 11;
     }
 
     private bool ValidarFormatoEmail(string email)
-    {
-        return email.Contains("@") && email.Contains(".");
-    }
+        => email.Contains("@") && email.Contains(".");
 }
