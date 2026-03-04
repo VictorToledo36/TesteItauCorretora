@@ -10,6 +10,7 @@ public class Custodia
 {
     public int Id { get; set; }
     public int ContaGraficaId { get; set; }
+    public ContaGrafica ContaGrafica { get; private set; }
     public string Ticker { get; set; } = string.Empty;
     public int Quantidade { get; set; }
     public decimal PrecoMedio { get; set; }
