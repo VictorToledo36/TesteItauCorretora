@@ -1,11 +1,4 @@
-﻿
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TesteItauCorretora.Domain.Entities;
+﻿namespace TesteItauCorretora.Domain.Entities;
 
 public enum TipoConta
 {
@@ -15,10 +8,32 @@ public enum TipoConta
 
 public class ContaGrafica
 {
-    public int Id { get; set; }
-    public int ClienteID { get; set; }
-    public string NumeroConta { get; set; } = string.Empty;
-    public TipoConta Tipo { get; set; }
-    public DateTime DataCriacao { get; set; }
-    public ICollection<Custodia>? Custodias { get; set; }
+    public int Id { get; private set; }
+    public int ClienteId { get; private set; }
+    public string NumeroConta { get; private set; }
+    public TipoConta Tipo { get; private set; }
+    public DateTime DataCriacao { get; private set; }
+
+    public ICollection<Custodia> Custodias { get; private set; }
+        = new List<Custodia>();
+
+    private ContaGrafica() { } // EF
+
+    private ContaGrafica(int clienteId, TipoConta tipo)
+    {
+        ClienteId = clienteId;
+        Tipo = tipo;
+        DataCriacao = DateTime.Now;
+        NumeroConta = GerarNumeroConta();
+    }
+
+    public static ContaGrafica CriarParaCliente(int clienteId)
+    {
+        return new ContaGrafica(clienteId, TipoConta.Filhote);
+    }
+
+    private string GerarNumeroConta()
+    {
+        return $"CG-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
+    }
 }
