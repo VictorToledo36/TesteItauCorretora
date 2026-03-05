@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TesteItauCorretora.Domain\TesteItauCorretora.Domain.csproj" />
+    <ProjectReference Include="..\TesteItauCorretora.Domain\TesteItauCorretora.Core.csproj" />
   </ItemGroup>
 
 </Project>
