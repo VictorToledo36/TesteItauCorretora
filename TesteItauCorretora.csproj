@@ -12,7 +12,16 @@
 
   <ItemGroup>
     <ProjectReference Include="TesteItauCorretora.Infrastructure\TesteItauCorretora.Infrastructure.csproj" />
-    <ProjectReference Include="TesteItauCorretora.Domain\TesteItauCorretora.Domain.csproj" />
+    <ProjectReference Include="TesteItauCorretora.Domain\TesteItauCorretora.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="TesteItauCorretora.Domain\**" />
+    <EmbeddedResource Remove="TesteItauCorretora.Domain\**" />
+    <None Remove="TesteItauCorretora.Domain\**" />
+    <Compile Remove="TesteItauCorretora.Infrastructure\**" />
+    <EmbeddedResource Remove="TesteItauCorretora.Infrastructure\**" />
+    <None Remove="TesteItauCorretora.Infrastructure\**" />
   </ItemGroup>
 
 </Project>
