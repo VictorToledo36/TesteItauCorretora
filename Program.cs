@@ -1,11 +1,29 @@
+using Microsoft.EntityFrameworkCore;
+using TesteItauCorretora.Infrastructure.Persistence;
+using TesteItauCorretora.Domain.Gateway;
+using TesteItauCorretora.Infrastructure.Gateway;
+using TesteItauCorretora.Core.UseCase.Clientes;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    )
+);
+
+// Registrar Repositories
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IContaGraficaRepository, ContaGraficaRepository>();
+
+// Registrar UseCases
+builder.Services.AddScoped<AdesaoClienteUseCase>();
 
 var app = builder.Build();
 
