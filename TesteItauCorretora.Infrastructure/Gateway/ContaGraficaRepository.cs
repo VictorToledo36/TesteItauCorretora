@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TesteItauCorretora.Domain.Entities;
 using TesteItauCorretora.Domain.Gateway;
 using TesteItauCorretora.Infrastructure.Persistence;
+
+namespace TesteItauCorretora.Infrastructure.Gateway;
 
 public class ContaGraficaRepository : IContaGraficaRepository
 {
@@ -21,7 +23,6 @@ public class ContaGraficaRepository : IContaGraficaRepository
     public async Task<ContaGrafica?> ObterPorIdAsync(int id)
     {
         return await _context.ContasGraficas
-            .Include(c => c.Custodias)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
