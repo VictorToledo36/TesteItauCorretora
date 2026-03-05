@@ -22,6 +22,9 @@
     <Compile Remove="TesteItauCorretora.Infrastructure\**" />
     <EmbeddedResource Remove="TesteItauCorretora.Infrastructure\**" />
     <None Remove="TesteItauCorretora.Infrastructure\**" />
+    <Compile Remove="TesteItauCorretora.Teste\**" />
+    <EmbeddedResource Remove="TesteItauCorretora.Teste\**" />
+    <None Remove="TesteItauCorretora.Teste\**" />
   </ItemGroup>
 
 </Project>
