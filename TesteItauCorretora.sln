@@ -1,9 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora", "TesteItauCorretora.csproj", "{FECDA25A-E7E9-4989-818F-D58F95148360}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Core", "TesteItauCorretora.Domain\TesteItauCorretora.Core.csproj", "{AB59635A-DBDD-4BD1-B402-B507550D5F2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Infrastructure", "TesteItauCorretora.Infrastructure\TesteItauCorretora.Infrastructure.csproj", "{674DF94D-A578-495C-A9B6-E58CB39460AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Teste", "TesteItauCorretora.Teste\TesteItauCorretora.Teste.csproj", "{B3F30A1B-AE9A-4256-B89C-0530686B8599}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Api", "..\TesteItauCorretora.Api\TesteItauCorretora.Api.csproj", "{C333BCE4-6433-47C3-89E9-1ECF617BC37B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB59635A-DBDD-4BD1-B402-B507550D5F2A} = {AB59635A-DBDD-4BD1-B402-B507550D5F2A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +26,22 @@ Global
 		{FECDA25A-E7E9-4989-818F-D58F95148360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FECDA25A-E7E9-4989-818F-D58F95148360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FECDA25A-E7E9-4989-818F-D58F95148360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB59635A-DBDD-4BD1-B402-B507550D5F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB59635A-DBDD-4BD1-B402-B507550D5F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB59635A-DBDD-4BD1-B402-B507550D5F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB59635A-DBDD-4BD1-B402-B507550D5F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{674DF94D-A578-495C-A9B6-E58CB39460AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{674DF94D-A578-495C-A9B6-E58CB39460AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{674DF94D-A578-495C-A9B6-E58CB39460AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{674DF94D-A578-495C-A9B6-E58CB39460AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
