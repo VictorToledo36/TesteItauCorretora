@@ -10,7 +10,7 @@ public class ContaGrafica
 {
     public int Id { get; private set; }
     public int ClienteId { get; private set; }
-    public string NumeroConta { get; private set; }
+    public string NumeroConta { get; private set; } = string.Empty;
     public TipoConta Tipo { get; private set; }
     public DateTime DataCriacao { get; private set; }
 
@@ -18,6 +18,13 @@ public class ContaGrafica
         = new List<Custodia>();
 
     private ContaGrafica() { } // EF
+
+    public ContaGrafica(string numeroConta, TipoConta tipo)
+    {
+        NumeroConta = numeroConta;
+        Tipo = tipo;
+        DataCriacao = DateTime.Now;
+    }
 
     private ContaGrafica(int clienteId, TipoConta tipo)
     {
@@ -30,6 +37,11 @@ public class ContaGrafica
     public static ContaGrafica CriarParaCliente(int clienteId)
     {
         return new ContaGrafica(clienteId, TipoConta.Filhote);
+    }
+
+    public void AssociarCliente(int clienteId)
+    {
+        ClienteId = clienteId;
     }
 
     private string GerarNumeroConta()
