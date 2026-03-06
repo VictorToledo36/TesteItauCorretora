@@ -1,6 +1,0 @@
-@TesteItauCorretora_HostAddress = http://localhost:5207
-
-GET {{TesteItauCorretora_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
