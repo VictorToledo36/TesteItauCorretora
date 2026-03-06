@@ -8,4 +8,19 @@
     <RootNamespace>TesteItauCorretora.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="DTOs\Request\NovaPasta\**" />
+    <Compile Remove="UseCase\NovaPasta1\**" />
+    <Compile Remove="UseCase\NovaPasta2\**" />
+    <Compile Remove="UseCase\NovaPasta\**" />
+    <EmbeddedResource Remove="DTOs\Request\NovaPasta\**" />
+    <EmbeddedResource Remove="UseCase\NovaPasta1\**" />
+    <EmbeddedResource Remove="UseCase\NovaPasta2\**" />
+    <EmbeddedResource Remove="UseCase\NovaPasta\**" />
+    <None Remove="DTOs\Request\NovaPasta\**" />
+    <None Remove="UseCase\NovaPasta1\**" />
+    <None Remove="UseCase\NovaPasta2\**" />
+    <None Remove="UseCase\NovaPasta\**" />
+  </ItemGroup>
+
 </Project>
