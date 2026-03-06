@@ -46,4 +46,11 @@ public class CustodiaRepository : ICustodiaRepository
         _context.Custodias.Update(custodia);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Custodia>> ObterCustodiasPorContaAsync(int contaGraficaId)
+    {
+        return await _context.Custodias
+            .Where(c => c.ContaGraficaId == contaGraficaId)
+            .ToListAsync();
+    }
 }

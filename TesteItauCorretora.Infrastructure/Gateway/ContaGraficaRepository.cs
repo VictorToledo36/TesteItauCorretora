@@ -45,4 +45,11 @@ public class ContaGraficaRepository : IContaGraficaRepository
         
         return $"{prefixo}-{proximoNumero:D6}";
     }
+
+    public async Task<ContaGrafica?> ObterPorClienteIdAsync(int clienteId)
+    {
+        return await _context.ContasGraficas
+            .Include(c => c.Custodias)
+            .FirstOrDefaultAsync(c => c.ClienteId == clienteId);
+    }
 }
