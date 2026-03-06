@@ -1,4 +1,4 @@
-namespace TesteItauCorretora.Core.UseCase.Clientes;
+namespace TesteItauCorretora.Domain.DTOs.Response;
 
 public class AdesaoResponse
 {
