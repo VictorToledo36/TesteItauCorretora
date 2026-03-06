@@ -1,6 +1,6 @@
 ﻿using TesteItauCorretora.Domain.Entities;
 
-namespace TesteItauCorretora.Core.UseCases.Clientes;
+namespace TesteItauCorretora.Domain.DTOs;
 
 public class ClienteDto
 {
