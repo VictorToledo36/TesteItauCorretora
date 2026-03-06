@@ -1,9 +1,10 @@
 ﻿using TesteItauCorretora.Domain.Gateway;
-using TesteItauCorretora.Core.UseCase.Clientes;
 using TesteItauCorretora.Domain.Entities;
 using TesteItauCorretora.Domain.Exceptions;
+using TesteItauCorretora.Domain.DTOs.Request;
+using TesteItauCorretora.Domain.DTOs.Response;
 
-namespace TesteItauCorretora.Core.UseCase.Clientes;
+namespace TesteItauCorretora.Domain.UseCase.Clientes;
 
 public class AdesaoClienteUseCase
 {
