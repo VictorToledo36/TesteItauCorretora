@@ -11,11 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Teste", "TesteItauCorretora.Teste\TesteItauCorretora.Teste.csproj", "{B3F30A1B-AE9A-4256-B89C-0530686B8599}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteItauCorretora.Api", "..\TesteItauCorretora.Api\TesteItauCorretora.Api.csproj", "{C333BCE4-6433-47C3-89E9-1ECF617BC37B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AB59635A-DBDD-4BD1-B402-B507550D5F2A} = {AB59635A-DBDD-4BD1-B402-B507550D5F2A}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +33,6 @@ Global
 		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3F30A1B-AE9A-4256-B89C-0530686B8599}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C333BCE4-6433-47C3-89E9-1ECF617BC37B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
