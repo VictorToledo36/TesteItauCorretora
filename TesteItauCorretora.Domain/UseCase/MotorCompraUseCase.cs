@@ -41,8 +41,9 @@ public class MotorCompra
             throw new InvalidOperationException("Data não é dia de execução (5, 15 ou 25).");
 
         // Validar se é dia útil (segunda a sexta)
+        // Ajustar para próximo dia útil se cair no fim de semana (RN-021)
         if (!EhDiaUtil(dataExecucao))
-            throw new InvalidOperationException("Data não é dia útil.");
+            dataExecucao = AjustarParaDiaUtil(dataExecucao);
 
         var resultado = new ResultadoExecucao { DataExecucao = dataExecucao };
 
@@ -99,8 +100,11 @@ public class MotorCompra
 
             // Passo 8: Distribuir para filhotes
             var quantidadeParaDistribuir = saldoDisponivel + quantidadeAComprar;
+            var ultimaOrdem = resultado.OrdensExecutadas.LastOrDefault();
             await DistribuirParaFilhotesAsync(clientesLista, item.Ticker, quantidadeParaDistribuir,
-                cotacao.PrecoFechamento, dataExecucao, resultado);
+                cotacao.PrecoFechamento, dataExecucao,
+                ultimaOrdem?.Id ?? 0,
+                resultado);
         }
 
         resultado.Sucesso = true;
@@ -168,10 +172,14 @@ public class MotorCompra
     }
 
     private async Task DistribuirParaFilhotesAsync(List<Cliente> clientes, string ticker,
-        int quantidadeTotal, decimal precoUnitario, DateTime dataExecucao, ResultadoExecucao resultado)
+        int quantidadeTotal, decimal precoUnitario, DateTime dataExecucao,
+        int ordemCompraId, 
+        ResultadoExecucao resultado)
     {
         var valorTotalAportes = clientes.Sum(c => c.ValorMensal / 3);
         var quantidadeDistribuida = 0;
+
+        var eventosIR = new List<(EventoIR Evento, string CPF)>();
 
         foreach (var cliente in clientes)
         {
@@ -209,9 +217,24 @@ public class MotorCompra
             custodiaFilhote.AdicionarAtivos(quantidadeCliente, precoUnitario);
             await _custodiaRepository.AtualizarAsync(custodiaFilhote);
 
+            var distCliente = resultado.DistribuicoesPorCliente.FirstOrDefault(d => d.ClienteId == cliente.Id);
+
+            if (distCliente == null)
+            {
+                distCliente = new DistribuicaoCliente
+                {
+                    ClienteId = cliente.Id,
+                    Nome = cliente.Nome,
+                    ValorAporte = cliente.ValorMensal / 3
+                };
+                resultado.DistribuicoesPorCliente.Add(distCliente);
+            }
+
+            distCliente.AtivosPorTicker[ticker] = quantidadeCliente;
             // Registrar distribuição
             var distribuicao = new Distribuicao
             {
+                OrdemCompraId = ordemCompraId,
                 CustodiaFilhoteId = custodiaFilhote.Id,
                 Ticker = ticker,
                 Quantidade = quantidadeCliente,
@@ -220,9 +243,9 @@ public class MotorCompra
             };
             resultado.Distribuicoes.Add(distribuicao);
 
-            // Calcular e publicar IR dedo-duro
+            // Calcular e publicar IR dedo-duro (RN-053 e RN-054)
             var valorOperacao = quantidadeCliente * precoUnitario;
-            var valorIR = valorOperacao * TAXA_IR_DEDO_DURO;
+            var valorIR = Math.Round(valorOperacao * TAXA_IR_DEDO_DURO, 2); 
 
             var eventoIR = new EventoIR
             {
@@ -235,16 +258,25 @@ public class MotorCompra
                 DataEvento = dataExecucao
             };
 
-            await _eventoIRPublisher.PublicarAsync(eventoIR);
             resultado.EventosIR.Add(eventoIR);
+            eventosIR.Add((eventoIR, cliente.CPF));
         }
 
-        // Resíduos permanecem na custódia master
-        var residuo = quantidadeTotal - quantidadeDistribuida;
-        if (residuo > 0)
+        if (eventosIR.Any())
+            await _eventoIRPublisher.PublicarLoteAsync(eventosIR);
+
+        // Resíduos permanecem na custódia master (RN-039)
+        var custodiaMaster = await _custodiaRepository.ObterCustodiaMasterPorTickerAsync(ticker);
+        if (custodiaMaster != null && quantidadeDistribuida > 0)
         {
-            resultado.ResiduosPorTicker[ticker] = residuo;
+            custodiaMaster.RemoverAtivos(quantidadeDistribuida);
+            await _custodiaRepository.AtualizarAsync(custodiaMaster);
         }
+
+        var residuo = quantidadeTotal - quantidadeDistribuida;
+
+        if (residuo > 0)
+            resultado.ResiduosPorTicker[ticker] = residuo;
     }
 
     private bool EhDiaDeExecucao(DateTime data)
@@ -255,6 +287,13 @@ public class MotorCompra
     private bool EhDiaUtil(DateTime data)
     {
         return data.DayOfWeek != DayOfWeek.Saturday && data.DayOfWeek != DayOfWeek.Sunday;
+    }
+
+    private DateTime AjustarParaDiaUtil(DateTime data)
+    {
+        while (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+            data = data.AddDays(1);
+        return data;
     }
 }
 
@@ -268,4 +307,13 @@ public class ResultadoExecucao
     public List<Distribuicao> Distribuicoes { get; set; } = new();
     public List<EventoIR> EventosIR { get; set; } = new();
     public Dictionary<string, int> ResiduosPorTicker { get; set; } = new();
+    public List<DistribuicaoCliente> DistribuicoesPorCliente { get; set; } = new(); 
+}
+
+public class DistribuicaoCliente
+{
+    public int ClienteId { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public decimal ValorAporte { get; set; }
+    public Dictionary<string, int> AtivosPorTicker { get; set; } = new();
 }
