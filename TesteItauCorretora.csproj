@@ -33,4 +33,12 @@
 		<None Remove="TesteItauCorretora.Teste\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Remove="Appsettings.docker.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Appsettings.docker.json" />
+	</ItemGroup>
+
 </Project>
