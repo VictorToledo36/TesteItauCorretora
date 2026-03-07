@@ -13,6 +13,7 @@ using Microsoft.OpenApi;
 using TesteItauCorretora.Middleware;
 using Microsoft.OpenApi.Models;
 using TesteItauCorretora.API.Middleware;
+using TesteItauCorretora.Infrastructure.BackgroundServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +52,11 @@ builder.Services.Configure<KafkaSettings>(
     builder.Configuration.GetSection("Kafka"));
 builder.Services.AddSingleton<IEventoIRPublisher, EventoIRPublisher>();
 
+builder.Services.Configure<MotorCompraConfig>(
+    builder.Configuration.GetSection("MotorCompra"));
+
+builder.Services.AddHostedService<MotorCompraBackgroundService>();
+
 // Registrar Repositories
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IContaGraficaRepository, ContaGraficaRepository>();
@@ -60,7 +66,6 @@ builder.Services.AddScoped<ICotacaoRepository, CotacaoRepository>();
 builder.Services.AddScoped<IDistribuicaoRepository, DistribuicaoRepository>();
 builder.Services.AddScoped<ConsultarCustodiaMasterUseCase>();
 builder.Services.AddScoped<IOrdemCompraRepository, OrdemCompraRepository>();
-builder.Services.AddScoped<IEventoIRPublisher, EventoIRPublisher>();
 
 // Registrar UseCases
 builder.Services.AddScoped<AdesaoClienteUseCase>();
