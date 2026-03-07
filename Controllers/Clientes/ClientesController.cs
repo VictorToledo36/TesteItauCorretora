@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TesteItauCorretora.Core.UseCase.Clientes;
 using TesteItauCorretora.Domain.DTOs.Request;
 using TesteItauCorretora.Domain.DTOs.Response;
@@ -9,6 +10,8 @@ namespace TesteItauCorretora.Controllers.Clientes;
 
 [ApiController]
 [Route("api/clientes")]
+[Produces("application/json")]
+[SwaggerTag("Gerenciamento de clientes  adesao, saida, alteracao de valor mensal e consultas")]
 public class ClientesController : ControllerBase
 {
     private readonly AdesaoClienteUseCase _adesaoUseCase;
@@ -32,6 +35,9 @@ public class ClientesController : ControllerBase
     }
 
     [HttpPost("adesao")]
+    [SwaggerOperation(
+    Summary = "Adesao de cliente",
+    Description = "Cadastra um novo cliente no plano de investimento recorrente. O valor mensal minimo e R$ 100,00.")]
     public async Task<ActionResult<AdesaoResponse>> Adesao([FromBody] AdesaoRequest request)
     {
         try
@@ -54,6 +60,9 @@ public class ClientesController : ControllerBase
     }
 
     [HttpPost("{clienteId}/saida")]
+    [SwaggerOperation(
+    Summary = "Saida de cliente",
+    Description = "Desativa o cliente.")]
     public async Task<ActionResult<SaidaClienteResponse>> Saida(int clienteId)
     {
         try
@@ -72,6 +81,9 @@ public class ClientesController : ControllerBase
     }
 
     [HttpPut("{clienteId}/valor-mensal")]
+    [SwaggerOperation(
+    Summary = "Valor Mensal",
+    Description = "Altera valor mensal.")]
     public async Task<ActionResult<AlterarValorMensalResponse>> AlterarValorMensal(
         int clienteId, [FromBody] AlterarValorMensalRequest request)
     {
@@ -95,6 +107,9 @@ public class ClientesController : ControllerBase
     }
 
     [HttpGet("{clienteId}/carteira")]
+    [SwaggerOperation(
+    Summary = "Carteira",
+    Description = "Consulta a carteira do cliente.")]
     public async Task<ActionResult<CarteiraResponse>> ConsultarCarteira(int clienteId)
     {
         try
@@ -113,6 +128,9 @@ public class ClientesController : ControllerBase
     }
 
     [HttpGet("{clienteId}/rentabilidade")]
+    [SwaggerOperation(
+    Summary = "Rentabilidade",
+    Description = "Consulta a rentabilidade da carteira do cliente.")]
     public async Task<ActionResult<RentabilidadeResponse>> ConsultarRentabilidade(int clienteId)
     {
         try
