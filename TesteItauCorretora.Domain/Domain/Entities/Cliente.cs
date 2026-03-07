@@ -106,7 +106,14 @@ public class Cliente
     private bool ValidarFormatoCpf(string cpf)
     {
         var cpfLimpo = LimparCpf(cpf);
-        return cpfLimpo.Length == 11;
+
+        if (cpfLimpo.Length != 11)
+            return false;
+
+        if (cpfLimpo.Distinct().Count() == 1)
+            return false;
+
+        return true;
     }
 
     private bool ValidarFormatoEmail(string email)
