@@ -28,20 +28,27 @@ public class EventoIRPublisher : IEventoIRPublisher, IDisposable
         var config = new ProducerConfig
         {
             BootstrapServers = _settings.BootstrapServers,
-
-            // Autenticação Confluent Cloud
-            SecurityProtocol = SecurityProtocol.SaslSsl,
-            SaslMechanism = SaslMechanism.Plain,
-            SaslUsername = _settings.ApiKey,
-            SaslPassword = _settings.ApiSecret,
-
-            // Confiabilidade
             Acks = Acks.All,
             MessageTimeoutMs = 10000,
             EnableIdempotence = true
         };
 
+        // Autenticação SASL apenas se ApiKey estiver configurada (Confluent Cloud)
+        // Kafka local via Docker não precisa de autenticação
+        if (!string.IsNullOrEmpty(_settings.ApiKey))
+        {
+            config.SecurityProtocol = SecurityProtocol.SaslSsl;
+            config.SaslMechanism = SaslMechanism.Plain;
+            config.SaslUsername = _settings.ApiKey;
+            config.SaslPassword = _settings.ApiSecret;
+        }
+
         _producer = new ProducerBuilder<string, string>(config).Build();
+
+        _logger.LogInformation(
+            "[Kafka] Producer inicializado | Broker: {Broker} | Modo: {Modo}",
+            _settings.BootstrapServers,
+            string.IsNullOrEmpty(_settings.ApiKey) ? "Local" : "Confluent Cloud");
     }
 
     public Task PublicarAsync(EventoIR eventoIR, string cpf)
