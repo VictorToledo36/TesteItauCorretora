@@ -21,6 +21,9 @@ public class ContaGrafica
 
     public ContaGrafica(string numeroConta, TipoConta tipo)
     {
+        if (string.IsNullOrWhiteSpace(numeroConta))
+            throw new ArgumentException("Número da conta é obrigatório.");
+
         NumeroConta = numeroConta;
         Tipo = tipo;
         DataCriacao = DateTime.Now;
