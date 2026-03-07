@@ -7,20 +7,49 @@ using TesteItauCorretora.Domain.UseCase.Adm;
 using TesteItauCorretora.Core.UseCase.Clientes;
 using TesteItauCorretora.Domain.UseCases;
 using TesteItauCorretora.Domain.UseCase;
+using TesteItauCorretora.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi;
+using TesteItauCorretora.Middleware;
+using Microsoft.OpenApi.Models;
+using TesteItauCorretora.API.Middleware;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Itau Corretora Sistema de Compra Programada",
+        Version = "v1",
+        Description = "API para gerenciamento do sistema de compra programada de acoes da Itau Corretora.",
+        Contact = new OpenApiContact
+        {
+            Name = "Victor Toledo"
+        }
+    });
+
+    options.EnableAnnotations();
+    options.OperationFilter<RequestIdHeaderFilter>();
+});
+
+//DataBase
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     )
 );
+
+//Kafka
+builder.Services.Configure<KafkaSettings>(
+    builder.Configuration.GetSection("Kafka"));
+builder.Services.AddSingleton<IEventoIRPublisher, EventoIRPublisher>();
 
 // Registrar Repositories
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
@@ -51,6 +80,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 app.UseHttpsRedirection();
@@ -58,5 +88,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<RequestIdMiddleware>();
+app.UseHttpsRedirection();
 
 app.Run();
