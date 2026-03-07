@@ -32,4 +32,12 @@ public class CestaRecomendacaoRepository : ICestaRecomendacaoRepository
         _context.CestasRecomendacao.Update(cesta);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<CestaRecomendacao>> ObterHistoricoAsync()
+    {
+        return await _context.CestasRecomendacao
+            .Include(c => c.Itens)
+            .OrderByDescending(c => c.DataCriacao)
+            .ToListAsync();
+    }
 }
