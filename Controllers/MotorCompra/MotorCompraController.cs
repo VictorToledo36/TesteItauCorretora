@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TesteItauCorretora.Domain.DTOs.Request;
 using TesteItauCorretora.Domain.DTOs.Response;
 using TesteItauCorretora.Domain.Entities;
@@ -8,6 +9,8 @@ namespace TesteItauCorretora.Controllers;
 
 [ApiController]
 [Route("api/motor")]
+[Produces("application/json")]
+[SwaggerTag("Motor de Compra — Execução automatizada de compras programadas nos dias 5, 15 e 25.")]
 public class MotorCompraController : ControllerBase
 {
     private readonly MotorCompra _motorCompra;
@@ -18,6 +21,9 @@ public class MotorCompraController : ControllerBase
     }
 
     [HttpPost("executar-compra")]
+    [SwaggerOperation(
+    Summary = "Motor de Compra",
+    Description = "Realiza aportes dos clientes ativos, aplicando a cesta recomendada (Top Five) e distribuindo os ativos proporcionalmente para cada custódia filhote..")]
     public async Task<IActionResult> ExecutarCompra([FromBody] ExecutarCompraRequest request)
     {
         try
