@@ -177,4 +177,65 @@ public class ClienteTests
         act.Should().Throw<ClienteDadosInvalidosException>()
             .WithMessage("Cliente já está ativo.");
     }
+
+    [Fact]
+    public void Criar_ClienteComCpfTodosDigitosIguais_DeveLancarExcecao()
+    {
+        var act = () => new Cliente("João", "11111111111", "joao@email.com", 1000m);
+
+        act.Should().Throw<ClienteDadosInvalidosException>()
+            .WithMessage("CPF inválido.");
+    }
+
+    [Fact]
+    public void AlterarValorMensal_MultiplaVezes_DeveManterlHistoricoCompleto()
+    {
+        var cliente = new Cliente("João", "12345678901", "joao@email.com", 1000m);
+
+        cliente.AlterarValorMensal(2000m, "Primeiro aumento");
+        cliente.AlterarValorMensal(3000m, "Segundo aumento");
+        cliente.AlterarValorMensal(1500m, "Redução");
+
+        cliente.ValorMensal.Should().Be(1500m);
+        cliente.HistoricoValores.Should().HaveCount(3);
+
+        var historico = cliente.HistoricoValores.ToList();
+        historico[0].ValorAnterior.Should().Be(1000m);
+        historico[1].ValorAnterior.Should().Be(2000m);
+        historico[2].ValorAnterior.Should().Be(3000m);
+    }
+
+    [Fact]
+    public void AlterarValorMensal_ParaValorAbaixoDoMinimo_DeveLancarExcecao()
+    {
+        var cliente = new Cliente("João", "12345678901", "joao@email.com", 1000m);
+
+        var act = () => cliente.AlterarValorMensal(50m);
+
+        act.Should().Throw<ClienteValorMensalInvalidoException>();
+        cliente.ValorMensal.Should().Be(1000m);
+    }
+
+    [Fact]
+    public void Criar_ClienteComValorMensalExatamenteNoMinimo_DeveCriarComSucesso()
+    {
+        var cliente = new Cliente("João", "12345678901", "joao@email.com", 100m);
+
+        cliente.ValorMensal.Should().Be(100m);
+        cliente.Ativo.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Sair_ClienteAtivo_DeveRegistrarDataSaidaCorreta()
+    {
+        var cliente = new Cliente("João", "12345678901", "joao@email.com", 1000m);
+        var antes = DateTime.Now;
+
+        cliente.Sair();
+
+        cliente.DataSaida.Should().NotBeNull();
+        cliente.DataSaida.Should().BeOnOrAfter(antes);
+        cliente.DataSaida.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(1));
+    }
+
 }

@@ -115,4 +115,43 @@ public class ContaGraficaTests
     {
         ((int)TipoConta.Filhote).Should().Be(2);
     }
+
+    [Fact]
+    public void Criar_ContaComNumeroVazio_DeveLancarExcecao()
+    {
+        var act = () => new ContaGrafica("", TipoConta.Filhote);
+
+        act.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void AssociarCliente_DuasVezes_DeveAtualizarClienteId()
+    {
+        var conta = new ContaGrafica("MST-000001", TipoConta.Master);
+
+        conta.AssociarCliente(1);
+        conta.AssociarCliente(2);
+
+        conta.ClienteId.Should().Be(2);
+    }
+
+    [Fact]
+    public void ClienteId_ContaRecemCriada_DeveSerNuloOuZero()
+    {
+        var conta = new ContaGrafica("FLH-000001", TipoConta.Filhote);
+
+        // ClienteId é int, então começa como 0 antes de associar
+        conta.ClienteId.Should().Be(0);
+    }
+
+    [Fact]
+    public void CriarParaCliente_ClientesdiferentesIds_DeveGerarContasDiferentes()
+    {
+        var conta1 = ContaGrafica.CriarParaCliente(1);
+        var conta2 = ContaGrafica.CriarParaCliente(2);
+
+        conta1.ClienteId.Should().Be(1);
+        conta2.ClienteId.Should().Be(2);
+        conta1.NumeroConta.Should().NotBe(conta2.NumeroConta);
+    }
 }

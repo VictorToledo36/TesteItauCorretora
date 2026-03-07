@@ -247,4 +247,62 @@ public class CestaRecomendacaoTests
         diferenca.AcoesQueSairam.Should().BeEmpty();
         diferenca.AcoesQueMudaram.Should().BeEmpty();
     }
+
+    [Fact]
+    public void Criar_CestaComPercentualNegativo_DeveLancarExcecao()
+    {
+        var act = () => new List<ItemCesta>
+    {
+        new ItemCesta("PETR4", -10m),
+        new ItemCesta("VALE3", 30m),
+        new ItemCesta("ITUB4", 30m),
+        new ItemCesta("BBDC4", 30m),
+        new ItemCesta("ABEV3", 20m)
+    };
+
+        act.Should().Throw<CestaRecomendacaoInvalidaException>()
+            .WithMessage("Percentual deve ser maior que 0.");
+    }
+
+    [Fact]
+    public void Criar_CestaComTickerVazio_DeveLancarExcecao()
+    {
+        var act = () => new List<ItemCesta>
+    {
+        new ItemCesta("", 20m),
+        new ItemCesta("VALE3", 20m),
+        new ItemCesta("ITUB4", 20m),
+        new ItemCesta("BBDC4", 20m),
+        new ItemCesta("ABEV3", 20m)
+    };
+
+        act.Should().Throw<CestaRecomendacaoInvalidaException>()
+            .WithMessage("Ticker é obrigatório.");
+    }
+
+    [Fact]
+    public void Criar_CestaComNomeApenasEspacos_DeveLancarExcecao()
+    {
+        var itens = CriarItensValidos();
+
+        var act = () => new CestaRecomendacao("   ", itens);
+
+        act.Should().Throw<CestaRecomendacaoInvalidaException>()
+            .WithMessage("Nome da cesta é obrigatório.");
+    }
+
+    [Fact]
+    public void CompararCom_CestasIdenticas_NaoDeveHaverDiferencas()
+    {
+        var itens = CriarItensValidos();
+        var cestaAntiga = new CestaRecomendacao("Cesta A", itens);
+        var cestaNova = new CestaRecomendacao("Cesta B", CriarItensValidos());
+
+        var diferenca = cestaNova.CompararCom(cestaAntiga);
+
+        diferenca.AcoesQueEntraram.Should().BeEmpty();
+        diferenca.AcoesQueSairam.Should().BeEmpty();
+        diferenca.AcoesQueMudaram.Should().BeEmpty();
+        diferenca.AcoesSemAlteracao.Should().HaveCount(5);
+    }
 }
