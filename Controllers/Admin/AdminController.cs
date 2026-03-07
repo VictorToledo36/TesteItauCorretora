@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TesteItauCorretora.Domain.DTOs;
 using TesteItauCorretora.Domain.UseCase.Adm;
 using TesteItauCorretora.Domain.UseCases;
@@ -7,6 +8,8 @@ namespace TesteItauCorretora.Controllers;
 
 [ApiController]
 [Route("api/admin")]
+[Produces("application/json")]
+[SwaggerTag("Gerenciamento do ADM — Cadastro das cestas, consulta histórico e conta - master")]
 public class AdminController : ControllerBase
 {
     private readonly CadastrarCestaUseCase _cadastrarCestaUseCase;
@@ -27,6 +30,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("cesta")]
+    [SwaggerOperation(
+    Summary = "Cesta de tickers",
+    Description = "Cadastra uma cesta de 5 ações.")]
     public async Task<IActionResult> CadastrarCesta([FromBody] CestaRequest request)
     {
         var response = await _cadastrarCestaUseCase.ExecutarAsync(request);
@@ -34,6 +40,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("cesta/atual")]
+    [SwaggerOperation(
+    Summary = "Cesta Atual",
+    Description = "Consulta cesta atual.")]
     public async Task<IActionResult> ConsultarCestaAtual()
     {
         var response = await _consultarCestaAtualUseCase.ExecutarAsync();
@@ -43,6 +52,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("cesta/historico")]
+    [SwaggerOperation(
+    Summary = "Cesta Historico",
+    Description = "Consulta histórico de cestas.")]
     public async Task<IActionResult> ConsultarHistorico()
     {
         var response = await _consultarHistoricoCestasUseCase.ExecutarAsync();
@@ -50,6 +62,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("conta-master/custodia")]
+    [SwaggerOperation(
+    Summary = "Master Custodia",
+    Description = "Consulta custodia da conta master.")]
     public async Task<IActionResult> ConsultarCustodiaMaster()
     {
         try
