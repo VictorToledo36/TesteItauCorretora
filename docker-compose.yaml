@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
 
-  # MySQL
   mysql:
     image: mysql:8.0
     container_name: itau-corretora-mysql
@@ -19,7 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Zookeeper (necessário para o Kafka)
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: itau-corretora-zookeeper
@@ -29,7 +27,6 @@ services:
     ports:
       - "2181:2181"
 
-  # Kafka
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: itau-corretora-kafka
@@ -49,7 +46,6 @@ services:
       timeout: 10s
       retries: 5
 
-  # Kafka UI — visualizar mensagens em http://localhost:8080
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: itau-corretora-kafka-ui
